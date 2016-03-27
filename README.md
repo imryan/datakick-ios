@@ -6,6 +6,13 @@ Usage
 --
 Usage is simple. All values are returned through completion blocks.
 
+Each `Item` object holds a few basic attributes:
+* `gtin14`
+* `brandName`
+* `name`
+* `size`
+* `images` an NSArray that contains URL strings to images.
+
 ##### Retrieving the first 100 objects
 
 ```
