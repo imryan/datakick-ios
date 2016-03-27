@@ -62,6 +62,6 @@ NSDictionary *attributes = @{
                              @"size"       : @"40 oz."
                              };
 
-[[Datakick sharedInstance] updateItemWithGtin:@"000000000001" attributes:attributes block:^(NSError *error) {
+[[Datakick sharedInstance] updateItemWithGtin:@"000000000000" attributes:attributes block:^(NSError *error) {
     if (error) NSLog(@"Error: %@", error);
 }];
