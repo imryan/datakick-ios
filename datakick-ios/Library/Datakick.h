@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "Item.h"
 
 #define DK_URL_BASE      @"https://www.datakick.org/api/items"           // GET or PUT
@@ -18,6 +19,7 @@
 typedef void (^DKGetAllItems)(NSArray *items);
 typedef void (^DKGetItem)(Item *item);
 typedef void (^DKGetItemsQuery)(NSArray *items);
+typedef void (^DKError)(NSError *error);
 
 @interface Datakick : NSObject
 
@@ -37,8 +39,18 @@ typedef void (^DKGetItemsQuery)(NSArray *items);
 - (void)getItemByGtin:(NSString *)gtin14 withBlock:(DKGetItem)block;
 
 /**
- * Returns an Item object by a query.
+ * Returns an Item object from a query.
  */
 - (void)getItemsByQuery:(NSString *)query withBlock:(DKGetItemsQuery)block;
+
+/**
+ * Updates an item in the database based on its GTIN-14 identifier.
+ */
+- (void)updateItemWithGtin:(NSString *)gtin14 attributes:(NSDictionary *)attributes block:(DKError)block;
+
+/**
+ * Adds an image to an item by its GTIN-14 identifier.
+ */
+- (void)addImageForItemWithGtin:(NSString *)gtin14 image:(UIImage *)image block:(DKError)block;
 
 @end

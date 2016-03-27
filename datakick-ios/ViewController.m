@@ -18,18 +18,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
-//    [[Datakick sharedInstance] getAllItemsWithBlock:^(NSArray *items) {
-//        for (Item *item in items) {
-//            NSLog(@"%@", item.name);
-//        }
-//    }];
-    
-//    [[Datakick sharedInstance] getItemsByQuery:@"cookies" withBlock:^(NSArray *items) {
-//        for (Item *item in items) {
-//            NSLog(@"%@", item.name);
-//        }
-//    }];
 }
 
 - (void)didReceiveMemoryWarning {

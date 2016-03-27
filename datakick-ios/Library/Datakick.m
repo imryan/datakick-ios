@@ -85,4 +85,16 @@
     }];
 }
 
+- (void)updateItemWithGtin:(NSString *)gtin14 attributes:(NSDictionary *)attributes block:(DKError)block {
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSString *url = [NSString stringWithFormat:DK_URL_GET_ITEM, gtin14];
+    
+    [manager PUT:url parameters:attributes success:^(NSURLSessionTask *task, id responseObject) {
+        block(nil);
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        NSLog(@"[Error] updateItemWithGtin: %@", error);
+        block(error);
+    }];
+}
+
 @end
