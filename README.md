@@ -16,6 +16,14 @@ Usage is simple. All values are returned through completion blocks.
 }];
 ```
 
+##### Retrieving an Item object by its GTIN-14 identifier
+
+```
+[[Datakick sharedInstance] getItemByGtin:@"000000000000" withBlock:^(Item *item) {
+    NSLog(@"Item: %@", item.name);
+}];
+```
+
 ##### Retrieving an Item object from a query
 
 ```
