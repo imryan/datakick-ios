@@ -4,7 +4,6 @@ An iOS library/wrapper for the Datakick service.
 
 Usage
 --
-<<<<<<< HEAD
 Usage is simple. All values are returned through completion blocks.
 
 ##### Retrieving the first 100 objects
