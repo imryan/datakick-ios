@@ -30,7 +30,7 @@
         
         for (id object in responseObject) {
             Item *item = [[Item alloc] initWithGtin14:object[@"gtin14"]
-                                            brandName:object[@"brandName"]
+                                            brandName:object[@"brand_name"]
                                                  name:object[@"name"]
                                                  size:object[@"size"]
                                                images:object[@"images"]];
@@ -50,7 +50,7 @@
     
     [manager GET:url parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         Item *item = [[Item alloc] initWithGtin14:responseObject[@"gtin14"]
-                                        brandName:responseObject[@"brandName"]
+                                        brandName:responseObject[@"brand_name"]
                                              name:responseObject[@"name"]
                                              size:responseObject[@"size"]
                                            images:responseObject[@"images"]];
@@ -71,7 +71,7 @@
         
         for (id object in responseObject) {
             Item *item = [[Item alloc] initWithGtin14:object[@"gtin14"]
-                                            brandName:object[@"brandName"]
+                                            brandName:object[@"brand_name"]
                                                  name:object[@"name"]
                                                  size:object[@"size"]
                                                images:object[@"images"]];
