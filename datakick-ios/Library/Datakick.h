@@ -8,49 +8,43 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+
 #import "Item.h"
 
-#define DK_URL_BASE      @"https://www.datakick.org/api/items"           // GET or PUT
-#define DK_URL_GET_ITEM  @"https://www.datakick.org/api/items/%@"        // GET
-#define DK_URL_GET_QUERY @"https://www.datakick.org/api/items?query=%@"  // GET
-#define DK_URL_ADD_IMAGE @"https://www.datakick.org/api/items/%@/images" // POST
-
-
-typedef void (^DKGetAllItems)(NSArray *items);
-typedef void (^DKGetItem)(Item *item);
-typedef void (^DKGetItemsQuery)(NSArray *items);
-typedef void (^DKError)(NSError *error);
+typedef void (^DKGetItemsBlock)(NSArray<Item *> * _Nullable items);
+typedef void (^DKGetItemBlock)(Item * _Nullable item);
+typedef void (^DKErrorBlock)(NSError * _Nullable error);
 
 @interface Datakick : NSObject
 
 /**
  * Returns the shared instance.
  */
-+ (instancetype)sharedInstance;
++ (nonnull instancetype)sharedInstance;
 
 /**
  * Returns up to 100 objects.
  */
-- (void)getAllItemsWithBlock:(DKGetAllItems)block;
+- (void)getAllItemsWithBlock:(nonnull DKGetItemsBlock)block;
 
 /**
  * Returns an Item object by its GTIN-14 identifier.
  */
-- (void)getItemByGtin:(NSString *)gtin14 withBlock:(DKGetItem)block;
+- (void)getItemByGtin:(nonnull NSString *)gtin14 withBlock:(nonnull DKGetItemBlock)block;
 
 /**
  * Returns an Item object from a query.
  */
-- (void)getItemsByQuery:(NSString *)query withBlock:(DKGetItemsQuery)block;
+- (void)getItemsByQuery:(nonnull NSString *)query withBlock:(nonnull DKGetItemsBlock)block;
 
 /**
  * Updates an item in the database based on its GTIN-14 identifier.
  */
-- (void)updateItemWithGtin:(NSString *)gtin14 attributes:(NSDictionary *)attributes block:(DKError)block;
+- (void)updateItemWithGtin:(nonnull NSString *)gtin14 attributes:(nonnull NSDictionary<NSString *, NSString *> *)attributes block:(nullable DKErrorBlock)block;
 
 /**
  * Adds an image to an item by its GTIN-14 identifier.
  */
-- (void)addImageForItemWithGtin:(NSString *)gtin14 image:(UIImage *)image block:(DKError)block;
+// - (void)addImageForItemWithGtin:(nonnull NSString *)gtin14 image:(nonnull UIImage *)image block:(nullable DKError)block;
 
 @end

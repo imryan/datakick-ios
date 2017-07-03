@@ -7,11 +7,6 @@
 //
 
 #import "ViewController.h"
-#import "Datakick.h"
-
-@interface ViewController ()
-
-@end
 
 @implementation ViewController
 

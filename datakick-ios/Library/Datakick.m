@@ -9,7 +9,20 @@
 #import "Datakick.h"
 #import "AFNetworking.h"
 
+NSString * const DK_URL_BASE      = @"https://www.datakick.org/api/items";
+NSString * const DK_URL_GET_ITEM  = @"https://www.datakick.org/api/items/%@";
+NSString * const DK_URL_GET_QUERY = @"https://www.datakick.org/api/items?query=%@";
+NSString * const DK_URL_ADD_IMAGE = @"https://www.datakick.org/api/items/%@/images";
+
+@interface Datakick ()
+
+@property (nonatomic, strong) AFHTTPSessionManager *manager;
+
+@end
+
 @implementation Datakick
+
+# pragma mark - Init
 
 + (instancetype)sharedInstance {
     static Datakick *datakick = nil;
@@ -17,15 +30,16 @@
     
     dispatch_once(&dispatchToken, ^{
         datakick = [self new];
+        datakick.manager = [AFHTTPSessionManager manager];
     });
     
     return datakick;
 }
 
-- (void)getAllItemsWithBlock:(DKGetAllItems)block {
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    
-    [manager GET:DK_URL_BASE parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+# pragma mark - Get
+
+- (void)getAllItemsWithBlock:(DKGetItemsBlock)block {
+    [self.manager GET:DK_URL_BASE parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         NSMutableArray *items = [NSMutableArray array];
         
         for (id object in responseObject) {
@@ -40,15 +54,15 @@
         block(items);
         
     } failure:^(NSURLSessionTask *operation, NSError *error) {
-        NSLog(@"[Error] getAllItemsWithBlock: %@", error);
+        NSLog(@"%@ %@", NSStringFromSelector(_cmd), error);
+        block(nil);
     }];
 }
 
-- (void)getItemByGtin:(NSString *)gtin14 withBlock:(DKGetItem)block {
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+- (void)getItemByGtin:(NSString *)gtin14 withBlock:(DKGetItemBlock)block {
     NSString *url = [NSString stringWithFormat:DK_URL_GET_ITEM, gtin14];
     
-    [manager GET:url parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+    [self.manager GET:url parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         Item *item = [[Item alloc] initWithGtin14:responseObject[@"gtin14"]
                                         brandName:responseObject[@"brand_name"]
                                              name:responseObject[@"name"]
@@ -57,16 +71,16 @@
         block(item);
         
     } failure:^(NSURLSessionTask *operation, NSError *error) {
-        NSLog(@"[Error] getItemByGtin: %@", error);
+        NSLog(@"%@ %@", NSStringFromSelector(_cmd), error);
+        block(nil);
     }];
 }
 
-- (void)getItemsByQuery:(NSString *)query withBlock:(DKGetItemsQuery)block {
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+- (void)getItemsByQuery:(NSString *)query withBlock:(DKGetItemsBlock)block {
     NSString *url = [NSString stringWithFormat:DK_URL_GET_QUERY, query];
     url = [url stringByReplacingOccurrencesOfString:@" " withString:@"+"];
     
-    [manager GET:url parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+    [self.manager GET:url parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         NSMutableArray *items = [NSMutableArray array];
         
         for (id object in responseObject) {
@@ -81,18 +95,20 @@
         block(items);
         
     } failure:^(NSURLSessionTask *operation, NSError *error) {
-        NSLog(@"[Error] getItemByQuery: %@", error);
+        NSLog(@"%@ %@", NSStringFromSelector(_cmd), error);
+        block(nil);
     }];
 }
 
-- (void)updateItemWithGtin:(NSString *)gtin14 attributes:(NSDictionary *)attributes block:(DKError)block {
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+# pragma mark - Update
+
+- (void)updateItemWithGtin:(NSString *)gtin14 attributes:(NSDictionary *)attributes block:(DKErrorBlock)block {
     NSString *url = [NSString stringWithFormat:DK_URL_GET_ITEM, gtin14];
     
-    [manager PUT:url parameters:attributes success:^(NSURLSessionTask *task, id responseObject) {
+    [self.manager PUT:url parameters:attributes success:^(NSURLSessionTask *task, id responseObject) {
         block(nil);
     } failure:^(NSURLSessionTask *operation, NSError *error) {
-        NSLog(@"[Error] updateItemWithGtin: %@", error);
+        NSLog(@"%@ %@", NSStringFromSelector(_cmd), error);
         block(error);
     }];
 }
